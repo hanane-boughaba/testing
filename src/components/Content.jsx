@@ -5,7 +5,7 @@ import Main from "./Main";
 const Content = () => {
   const movie = useSelector((state) => state.movie);
 
-  const [whatToReturn, setwhatToReturn] = useState(1);
+  const [whatToReturn, setwhatToReturn] = useState();
 
   useEffect(() => {
     if (
@@ -15,19 +15,19 @@ const Content = () => {
       setwhatToReturn(1);
     } else if (movie.categoryMovies.length > 0) {
       setwhatToReturn(2);
-    } else if (movie.searchedMovies.length > 0) {
+    }
+    if (movie.searching) {
       setwhatToReturn(3);
-      }
-  }, [movie.searchedMovies, movie.categoryMovies]);
+    }
+  }, [movie]);
 
   switch (whatToReturn) {
+    case 1:
+      return <Main data={movie.allMovies} />;
     case 2:
-      return <Main data={movie.categoryMovies.items} />;
+      return <Main data={movie.categoryMovies} />;
     case 3:
       return <Main data={movie.searchedMovies} />;
-
-    default:
-      return <Main data={movie.allMovies} />;
   }
 };
 
